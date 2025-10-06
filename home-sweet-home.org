@@ -165,13 +165,6 @@ highest priority packages coming up first.
                 company-show-numbers t
                 company-tooltip-align-annotations t)))
 
-  (use-package copilot
-    :straight (:host github :repo "copilot-emacs/copilot.el" :files ("*.el"))
-    :ensure t
-    :config (progn
-              (define-key copilot-completion-map (kbd "<tab>") 'copilot-accept-completion)
-              (define-key copilot-completion-map (kbd "TAB") 'copilot-accept-completion)))
-
   (use-package counsel
     :straight t
     :diminish t)
@@ -382,6 +375,14 @@ highest priority packages coming up first.
     consult
     dape
     visual-replace)
+
+  (use-package claude-code-ide
+    :straight (:type git :host github :repo "manzaltu/claude-code-ide.el")
+    :bind ("C-c C-'" . claude-code-ide-menu)
+    :config
+    (progn
+      (setq claude-code-ide-terminal-backend 'eat)
+      (claude-code-ide-emacs-tools-setup)))
 
   ;; Stolen from https://www.ovistoica.com/blog/2024-7-05-modern-emacs-typescript-web-tsx-config
   (use-package treesit
