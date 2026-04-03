@@ -1188,6 +1188,7 @@ highest priority packages coming up first.
   export PATH="/opt/homebrew/opt/llvm@14/bin:$PATH"
   export LDFLAGS="-L/opt/homebrew/opt/llvm@14/lib"
   export CPPFLAGS="-I/opt/homebrew/opt/llvm@14/include"
+  export PATH="$HOME/.bun/bin:$PATH"
 #+END_SRC
 
 #+BEGIN_SRC shell :tangle ~/minimal.zsh
