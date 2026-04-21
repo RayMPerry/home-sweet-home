@@ -264,6 +264,7 @@ highest priority packages coming up first.
   (use-packages
     lorem-ipsum
     lsp-mode
+    lsp-ivy
     lsp-ui
     magit
     magit-popup
@@ -364,6 +365,10 @@ highest priority packages coming up first.
   (straight-use-package '(odin-mode :type git :host github :repo "mattt-b/odin-mode"))
   (straight-use-package 'uiua-mode)
 
+  (straight-use-package '(lsp-biome :type git :host github :repo "cxa/lsp-biome"))
+
+  (straight-use-package '(kintsugi-mode :type git :host github :repo "kintsugi-lang/kintsugi-mode"))
+
   (use-packages
     posframe
     eat
@@ -381,22 +386,38 @@ highest priority packages coming up first.
 
   (use-package claude-code-ide
     :straight (:type git :host github :repo "manzaltu/claude-code-ide.el")
-    :bind ("C-c C-'" . claude-code-ide-menu)
+    :bind ("C-c C-'" . claude-code-ide)
     :config
     (progn
       (setq claude-code-ide-terminal-backend 'eat)
       (claude-code-ide-emacs-tools-setup)))
+
+  ;; (use-package agent-shell
+  ;;   :straight (:type git :host github :repo "xenodium/agent-shell")
+  ;;   :bind ("C-c C-'" . agent-shell-anthropic-start-claude-code)
+  ;;   :ensure t
+  ;;   :ensure-system-package
+  ;;   ;; Add agent installation configs here
+  ;;   ((claude . "brew install claude-code")
+  ;;     (claude-agent-acp . "pnpm install -g @zed-industries/claude-agent-acp"))
+  ;;   :config
+  ;;   (progn
+  ;;     (setq agent-shell-anthropic-claude-environment
+  ;;       (agent-shell-make-environment-variables :inherit-env t))
+  ;;     (setq agent-shell-anthropic-authentication
+  ;;       (agent-shell-anthropic-make-authentication :login t))
+  ;;     (setopt agent-shell-write-inhibit-minor-modes '(aggressive-indent-mode))))
 
   (straight-use-package 'fish-mode)
 
   ;; Stolen from https://www.ovistoica.com/blog/2024-7-05-modern-emacs-typescript-web-tsx-config
   (use-package treesit
         :mode (("\\.tsx\\'" . tsx-ts-mode)
-               ("\\.js\\'"  . typescript-ts-mode)
-               ("\\.mjs\\'" . typescript-ts-mode)
-               ("\\.mts\\'" . typescript-ts-mode)
-               ("\\.cjs\\'" . typescript-ts-mode)
-               ("\\.ts\\'"  . typescript-ts-mode)
+               ("\\.js\\'"  . typescript-mode)
+               ("\\.mjs\\'" . typescript-mode)
+               ("\\.mts\\'" . typescript-mode)
+               ("\\.cjs\\'" . typescript-mode)
+               ("\\.ts\\'"  . typescript-mode)
                ("\\.jsx\\'" . tsx-ts-mode)
                ("\\.json\\'" .  json-ts-mode)
                ("\\.Dockerfile\\'" . dockerfile-ts-mode)
@@ -442,9 +463,9 @@ highest priority packages coming up first.
         (dolist (mapping
                  '((python-mode . python-ts-mode)
                    (css-mode . css-ts-mode)
-                   (typescript-mode . typescript-ts-mode)
-                   (js-mode . typescript-ts-mode)
-                   (js2-mode . typescript-ts-mode)
+                   (typescript-mode . typescript-mode)
+                   (js-mode . javascript-mode)
+                   (js2-mode . javascript-mode)
                    (c-mode . c-ts-mode)
                    (c++-mode . c++-ts-mode)
                    (c-or-c++-mode . c-or-c++-ts-mode)
@@ -1159,9 +1180,12 @@ highest priority packages coming up first.
   [ -d "/opt/homebrew/Cellar/lua@5.1/5.1.5_8/" ] && eval $(luarocks --lua-dir=/opt/homebrew/Cellar/lua@5.1/5.1.5_8/ --lua-version=5.1 path)
   source "$HOME/.zshenv"
 
-  alias love="/Applications/love.app/Contents/MacOS/love"
-  alias lovr="/Applications/lovr.app/Contents/MacOS/lovr"
-  alias love-build="/Applications/love-build.app/Contents/MacOS/love"
+  if [ "$(uname)" = "Darwin" ]; then
+      alias love="/Applications/love.app/Contents/MacOS/love"
+      alias lovr="/Applications/lovr.app/Contents/MacOS/lovr"
+      alias love-build="/Applications/love-build.app/Contents/MacOS/love"
+  fi
+
   [ -n "$EAT_SHELL_INTEGRATION_DIR" ] && \
   source "$EAT_SHELL_INTEGRATION_DIR/zsh"
 #+END_SRC
@@ -1189,6 +1213,7 @@ highest priority packages coming up first.
   export LDFLAGS="-L/opt/homebrew/opt/llvm@14/lib"
   export CPPFLAGS="-I/opt/homebrew/opt/llvm@14/include"
   export PATH="$HOME/.bun/bin:$PATH"
+  export PATH="$HOME/.nimble/bin/:$PATH"
 #+END_SRC
 
 #+BEGIN_SRC shell :tangle ~/minimal.zsh
